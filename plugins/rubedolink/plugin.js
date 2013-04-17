@@ -3,7 +3,7 @@ CKEDITOR.plugins.add( 'rubedolink', {
     init: function( editor ) {
         editor.addCommand( 'insertRubedolink', {
             exec: function( editor ) {
-            		editor.popup("link-finder?ckinstance="+editor.name,200,200);
+            		editor.popup("link-finder?ckinstance="+editor.name,"300px","300px");
             }
         });
         editor.ui.addButton( 'Rubedolink', {
