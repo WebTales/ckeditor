@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <!--
-Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
-For licensing, see LICENSE.html or http://ckeditor.com/license
+Copyright (c) 2003-2014, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.md or http://ckeditor.com/license
 -->
 <html>
 <head>
-	<title>Massive inline editing &mdash; CKEditor Sample</title>
 	<meta charset="utf-8">
+	<title>Massive inline editing &mdash; CKEditor Sample</title>
 	<script src="../ckeditor.js"></script>
 	<script>
 
@@ -31,8 +31,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					// Remove unnecessary plugins to make the editor simpler.
 					editor.config.removePlugins = 'colorbutton,find,flash,font,' +
-						'forms,iframe,image,newpage,removeformat,scayt,' +
-						'smiley,specialchar,stylescombo,templates,wsc';
+						'forms,iframe,image,newpage,removeformat,' +
+						'smiley,specialchar,stylescombo,templates';
 
 					// Rearrange the layout of the toolbar.
 					editor.config.toolbarGroups = [
@@ -103,14 +103,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			font-family: "Arial Black",arial-black;
 			font-size: 4.6em;
-			line-height: 1.1em;
+			line-height: 1.1;
 			text-transform: uppercase;
 		}
 
 		#headerLeft h3
 		{
 			font-size: 2.3em;
-			line-height: 1.1em;
+			line-height: 1.1;
 			margin: .2em 0 0;
 			color: #666;
 		}
@@ -123,7 +123,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		#headerRight p
 		{
-			line-height: 1.8em;
+			line-height: 1.8;
 			text-align: justify;
 			margin: 0;
 		}
@@ -172,17 +172,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		#columns blockquote
 		{
-			position: relative;
-		}
-
-		#columns blockquote:before
-		{
-			content: "\201C";
-			font-size: 60px;
-			position: absolute;
-			left: -30px;
-			top: 10px;
-			color: #666;
+			margin-left: 15px;
 		}
 
 		#tagLine
@@ -256,7 +246,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					</p>
 				</blockquote>
 				<p>Pellentesque nunc. Donec suscipit erat. Pellentesque habitant morbi tristique ullamcorper.</p>
-				<p><strike>Mauris mattis feugiat lectus nec mauris. Nullam vitae ante.</strike></p>
+				<p><s>Mauris mattis feugiat lectus nec mauris. Nullam vitae ante.</s></p>
 			</div>
 		</div>
 		<div id="column2">
@@ -313,7 +303,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			http://ckeditor.com</a>
 	</p>
 	<p id="copy">
-		Copyright &copy; 2003-2012, <a class="samples" href="http://cksource.com/">CKSource</a>
+		Copyright &copy; 2003-2014, <a class="samples" href="http://cksource.com/">CKSource</a>
 		- Frederico Knabben. All rights reserved.
 	</p>
 </div>
