@@ -7,5 +7,6 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
-    config.protectedSource.push(/<i[^>]*><\/i>/g);
+    	config.protectedSource.push( /<i[\s\S]*?\>/g ); //allows beginning <i> tag
+	config.protectedSource.push( /<\/i[\s\S]*?\>/g ); //allows ending </i> tag
 };
