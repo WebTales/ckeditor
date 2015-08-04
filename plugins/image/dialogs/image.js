@@ -582,17 +582,18 @@
                                                             label: editor.lang.common.width,
                                                             onKeyUp: onSizeChange,
                                                             onChange: function() {
-                                                                //commitInternally.call( this, 'advanced:txtdlgGenStyle' );
-                                                                this.getDialog().bypassChangeUrl = true;
                                                                 var element = this.getDialog().imageElement;
-                                                                var url = element.data( 'cke-saved-src');
-                                                                url = updateQueryStringParameter(url, "width", this.getValue());
-
                                                                 var urlField = this.getDialog().getContentElement( 'info', 'txtUrl' );
-                                                                urlField.setValue(url);
-                                                                element.data( 'cke-saved-src', url );
-                                                                element.setAttribute( 'src', url );
-                                                                this.getDialog().bypassChangeUrl = false;
+                                                                var url = urlField.getValue();
+
+                                                                if(url && url != "") {
+                                                                    this.getDialog().bypassChangeUrl = true;
+                                                                    url = updateQueryStringParameter(url, "width", this.getValue());
+                                                                    urlField.setValue(url);
+                                                                    element.data( 'cke-saved-src', url );
+                                                                    element.setAttribute( 'src', url );
+                                                                    this.getDialog().bypassChangeUrl = false;
+                                                                }
                                                             },
                                                             validate: function() {
                                                                 var aMatch = this.getValue().match( regexGetSizeOrEmpty ),
@@ -632,17 +633,18 @@
                                                             label: editor.lang.common.height,
                                                             onKeyUp: onSizeChange,
                                                             onChange: function() {
-                                                                //commitInternally.call( this, 'advanced:txtdlgGenStyle' );
-                                                                this.getDialog().bypassChangeUrl = true;
                                                                 var element = this.getDialog().imageElement;
-                                                                var url = element.data( 'cke-saved-src');
-                                                                url = updateQueryStringParameter(url, "height", this.getValue());
-
                                                                 var urlField = this.getDialog().getContentElement( 'info', 'txtUrl' );
-                                                                urlField.setValue(url);
-                                                                element.data( 'cke-saved-src', url );
-                                                                element.setAttribute( 'src', url );
-                                                                this.getDialog().bypassChangeUrl = false;
+                                                                var url = urlField.getValue();
+
+                                                                if(url && url != "") {
+                                                                    this.getDialog().bypassChangeUrl = true;
+                                                                    url = updateQueryStringParameter(url, "height", this.getValue());
+                                                                    urlField.setValue(url);
+                                                                    element.data( 'cke-saved-src', url );
+                                                                    element.setAttribute( 'src', url );
+                                                                    this.getDialog().bypassChangeUrl = false;
+                                                                }
                                                             },
                                                             validate: function() {
                                                                 var aMatch = this.getValue().match( regexGetSizeOrEmpty ),
@@ -1214,15 +1216,15 @@
                                         genStyle = element.$.style.cssText;
                                     this.setValue( genStyle );
 
-                                    var height = element.$.style.height,
-                                        width = element.$.style.width,
-                                        aMatchH = ( height ? height : '' ).match( regexGetSize ),
-                                        aMatchW = ( width ? width : '' ).match( regexGetSize );
-
-                                    this.attributesInStyle = {
-                                        height: !!aMatchH,
-                                        width: !!aMatchW
-                                    };
+                                    //var height = element.$.style.height,
+                                    //    width = element.$.style.width,
+                                    //    aMatchH = ( height ? height : '' ).match( regexGetSize ),
+                                    //    aMatchW = ( width ? width : '' ).match( regexGetSize );
+                                    //
+                                    //this.attributesInStyle = {
+                                    //    height: !!aMatchH,
+                                    //    width: !!aMatchW
+                                    //};
                                 }
                             },
                             onChange: function() {
