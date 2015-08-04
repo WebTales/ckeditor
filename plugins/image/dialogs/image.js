@@ -185,6 +185,17 @@
             this.setValue( value );
         };
 
+        var updateQueryStringParameter = function(uri, key, value) {
+            var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+            var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+            if (uri.match(re)) {
+                return uri.replace(re, '$1' + key + "=" + value + '$2');
+            }
+            else {
+                return uri + separator + key + "=" + value;
+            }
+        }
+
         var previewPreloader;
 
         var onImgLoadEvent = function() {
@@ -450,37 +461,40 @@
                                             label: editor.lang.common.url,
                                             required: true,
                                             onChange: function() {
-                                                var dialog = this.getDialog(),
-                                                    newUrl = this.getValue();
+                                                var dialog = this.getDialog();
 
-                                                //Update original image
-                                                if ( newUrl.length > 0 ) //Prevent from load before onShow
-                                                {
-                                                    dialog = this.getDialog();
-                                                    var original = dialog.originalElement;
+                                                if(!dialog.bypassChangeUrl) {
+                                                    var newUrl = this.getValue();
 
-                                                    dialog.preview.removeStyle( 'display' );
+                                                    //Update original image
+                                                    if ( newUrl.length > 0 ) //Prevent from load before onShow
+                                                    {
+                                                        dialog = this.getDialog();
+                                                        var original = dialog.originalElement;
 
-                                                    original.setCustomData( 'isReady', 'false' );
-                                                    // Show loader
-                                                    var loader = CKEDITOR.document.getById( imagePreviewLoaderId );
-                                                    if ( loader )
-                                                        loader.setStyle( 'display', '' );
+                                                        dialog.preview.removeStyle( 'display' );
 
-                                                    original.on( 'load', onImgLoadEvent, dialog );
-                                                    original.on( 'error', onImgLoadErrorEvent, dialog );
-                                                    original.on( 'abort', onImgLoadErrorEvent, dialog );
-                                                    original.setAttribute( 'src', newUrl );
+                                                        original.setCustomData( 'isReady', 'false' );
+                                                        // Show loader
+                                                        var loader = CKEDITOR.document.getById( imagePreviewLoaderId );
+                                                        if ( loader )
+                                                            loader.setStyle( 'display', '' );
 
-                                                    // Query the preloader to figure out the url impacted by based href.
-                                                    previewPreloader.setAttribute( 'src', newUrl );
-                                                    dialog.preview.setAttribute( 'src', previewPreloader.$.src );
-                                                    updatePreview( dialog );
-                                                }
-                                                // Dont show preview if no URL given.
-                                                else if ( dialog.preview ) {
-                                                    dialog.preview.removeAttribute( 'src' );
-                                                    dialog.preview.setStyle( 'display', 'none' );
+                                                        original.on( 'load', onImgLoadEvent, dialog );
+                                                        original.on( 'error', onImgLoadErrorEvent, dialog );
+                                                        original.on( 'abort', onImgLoadErrorEvent, dialog );
+                                                        original.setAttribute( 'src', newUrl );
+
+                                                        // Query the preloader to figure out the url impacted by based href.
+                                                        previewPreloader.setAttribute( 'src', newUrl );
+                                                        dialog.preview.setAttribute( 'src', previewPreloader.$.src );
+                                                        updatePreview( dialog );
+                                                    }
+                                                    // Dont show preview if no URL given.
+                                                    else if ( dialog.preview ) {
+                                                        dialog.preview.removeAttribute( 'src' );
+                                                        dialog.preview.setStyle( 'display', 'none' );
+                                                    }
                                                 }
                                             },
                                             setup: function( type, element ) {
@@ -568,7 +582,17 @@
                                                             label: editor.lang.common.width,
                                                             onKeyUp: onSizeChange,
                                                             onChange: function() {
-                                                                commitInternally.call( this, 'advanced:txtdlgGenStyle' );
+                                                                //commitInternally.call( this, 'advanced:txtdlgGenStyle' );
+                                                                this.getDialog().bypassChangeUrl = true;
+                                                                var element = this.getDialog().imageElement;
+                                                                var url = element.data( 'cke-saved-src');
+                                                                url = updateQueryStringParameter(url, "width", this.getValue());
+
+                                                                var urlField = this.getDialog().getContentElement( 'info', 'txtUrl' );
+                                                                urlField.setValue(url);
+                                                                element.data( 'cke-saved-src', url );
+                                                                element.setAttribute( 'src', url );
+                                                                this.getDialog().bypassChangeUrl = false;
                                                             },
                                                             validate: function() {
                                                                 var aMatch = this.getValue().match( regexGetSizeOrEmpty ),
@@ -608,7 +632,17 @@
                                                             label: editor.lang.common.height,
                                                             onKeyUp: onSizeChange,
                                                             onChange: function() {
-                                                                commitInternally.call( this, 'advanced:txtdlgGenStyle' );
+                                                                //commitInternally.call( this, 'advanced:txtdlgGenStyle' );
+                                                                this.getDialog().bypassChangeUrl = true;
+                                                                var element = this.getDialog().imageElement;
+                                                                var url = element.data( 'cke-saved-src');
+                                                                url = updateQueryStringParameter(url, "height", this.getValue());
+
+                                                                var urlField = this.getDialog().getContentElement( 'info', 'txtUrl' );
+                                                                urlField.setValue(url);
+                                                                element.data( 'cke-saved-src', url );
+                                                                element.setAttribute( 'src', url );
+                                                                this.getDialog().bypassChangeUrl = false;
                                                             },
                                                             validate: function() {
                                                                 var aMatch = this.getValue().match( regexGetSizeOrEmpty ),
@@ -1194,8 +1228,7 @@
                             onChange: function() {
                                 commitInternally.call( this, [ 'info:cmbFloat', 'info:cmbAlign',
                                     'info:txtVSpace', 'info:txtHSpace',
-                                    'info:txtBorder',
-                                    'info:txtWidth', 'info:txtHeight' ] );
+                                    'info:txtBorder'] );
                                 updatePreview( this );
                             },
                             commit: function( type, element ) {
